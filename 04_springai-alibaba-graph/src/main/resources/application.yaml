@@ -1,0 +1,17 @@
+# 服务器配置
+server:
+  port: 8889  # 应用服务监听端口，默认8889
+
+spring:
+  # 应用基本信息配置
+  application:
+    name: sangeng-graph  # 应用名称
+
+  # Spring AI 配置
+  ai:
+    # 智谱AI大模型配置
+    zhipuai:
+      api-key: ${ZHIPU_KEY}  # 智谱API密钥（从环境变量ZHIPU_KEY获取）
+      chat:
+        options:
+          model: glm-4.5-air  # 使用的聊天模型名称（glm-4.5-air）

@@ -1,0 +1,21 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+
+spring:
+  ai:
+    zhipuai:
+      api-key: 25c47e46c43584b08fe5a2f9050a0849.3XyYvhLOVQUn6DSw
+      base-url: "https://open.bigmodel.cn/api/paas"
+      chat:
+        options:
+          model: glm-4.5-airx
+  http:
+    client:
+      read-timeout: 1000000
+
+

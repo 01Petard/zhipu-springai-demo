@@ -1,0 +1,163 @@
+╭─[MacBook-Air-2] as hzx in ~/project/ai-hub-backend on (master)✔                                                                                                                                  15:13:02
+╰─(๑˃̵ᴗ˂̵)و curl https://api.minimaxi.com/v1/chat/completions \
+  -H "Authorization: Bearer sk-api-UsS2MGV0DuRdocrw61qMo_tg_J2XE5jAFiYCc7q1fa0-5LJGOfl8IlTDyQ4N7IVAVoNbkHP6ShyL5q0jdP4NfbDWVUmQ40iH3qltQCpun-5QtuN9EQM5kC0" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "abab6.5s-chat",
+    "stream": true,
+    "messages": [{"role": "user", "content": "讲个笑话"}]
+  }'
+
+
+
+
+data: 
+{
+    "id": "061d4a00eba1d83851906d1547a5408c",
+    "choices": [
+        {
+            "index": 0,
+            "delta": {
+                "content": "好的",
+                "role": "assistant",
+                "name": "MM智能助理",
+                "audio_content": ""
+            }
+        }
+    ],
+    "created": 1775113984,
+    "model": "abab6.5s-chat",
+    "object": "chat.completion.chunk",
+    "usage": null,
+    "input_sensitive": false,
+    "output_sensitive": false,
+    "input_sensitive_type": 0,
+    "output_sensitive_type": 0,
+    "output_sensitive_int": 0
+}
+
+data: 
+{
+    "id": "061d4a00eba1d83851906d1547a5408c",
+    "choices": [
+        {
+            "index": 0,
+            "delta": {
+                "content": "，这里有一个简单的笑话：\n\n有一天，一只蚂蚁和一只大象去游泳。蚂蚁跳进水",
+                "role": "assistant",
+                "name": "MM智能助理",
+                "audio_content": ""
+            }
+        }
+    ],
+    "created": 1775113984,
+    "model": "abab6.5s-chat",
+    "object": "chat.completion.chunk",
+    "usage": null,
+    "input_sensitive": false,
+    "output_sensitive": false,
+    "input_sensitive_type": 0,
+    "output_sensitive_type": 0,
+    "output_sensitive_int": 0
+}
+
+data: 
+{
+    "id": "061d4a00eba1d83851906d1547a5408c",
+    "choices": [
+        {
+            "index": 0,
+            "delta": {
+                "content": "里后，开始在水面上快速地滑行，看起来就像是在冲浪一样。大象",
+                "role": "assistant",
+                "name": "MM智能助理",
+                "audio_content": ""
+            }
+        }
+    ],
+    "created": 1775113984,
+    "model": "abab6.5s-chat",
+    "object": "chat.completion.chunk",
+    "usage": null,
+    "input_sensitive": false,
+    "output_sensitive": false,
+    "input_sensitive_type": 0,
+    "output_sensitive_type": 0,
+    "output_sensitive_int": 0
+}
+
+data: 
+{
+    "id": "061d4a00eba1d83851906d1547a5408c",
+    "choices": [
+        {
+            "index": 0,
+            "delta": {
+                "content": "看了很羡慕，于是也跳进水里尝试。但是大象一跳进去，水就被",
+                "role": "assistant",
+                "name": "MM智能助理",
+                "audio_content": ""
+            }
+        }
+    ],
+    "created": 1775113984,
+    "model": "abab6.5s-chat",
+    "object": "chat.completion.chunk",
+    "usage": null,
+    "input_sensitive": false,
+    "output_sensitive": false,
+    "input_sensitive_type": 0,
+    "output_sensitive_type": 0,
+    "output_sensitive_int": 0
+}
+
+data: 
+{
+    "id": "061d4a00eba1d83851906d1547a5408c",
+    "choices": [
+        {
+            "index": 0,
+            "delta": {
+                "content": "弄得四溅，蚂蚁也被溅得老远。\n\n蚂蚁爬起来，看着大象说：“嘿",
+                "role": "assistant",
+                "name": "MM智能助理",
+                "audio_content": ""
+            }
+        }
+    ],
+    "created": 1775113984,
+    "model": "abab6.5s-chat",
+    "object": "chat.completion.chunk",
+    "usage": null,
+    "input_sensitive": false,
+    "output_sensitive": false,
+    "input_sensitive_type": 0,
+    "output_sensitive_type": 0,
+    "output_sensitive_int": 0
+}
+
+data: 
+{
+    "id": "061d4a00eba1d83851906d1547a5408c",
+    "choices": [
+        {
+            "finish_reason": "stop",
+            "index": 0,
+            "delta": {
+                "content": "，你真是个‘大象’冲浪手！”",
+                "role": "assistant",
+                "name": "MM智能助理",
+                "audio_content": ""
+            }
+        }
+    ],
+    "created": 1775113984,
+    "model": "abab6.5s-chat",
+    "object": "chat.completion.chunk",
+    "usage": null,
+    "input_sensitive": false,
+    "output_sensitive": false,
+    "input_sensitive_type": 0,
+    "output_sensitive_type": 0,
+    "output_sensitive_int": 0
+}

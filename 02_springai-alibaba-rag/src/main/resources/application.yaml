@@ -3,10 +3,17 @@ server:
   port: 8888  # 应用服务监听端口，默认8080
 
 spring:
-  # 应用基本信息配置
   application:
-    name: sangeng-redis-rag  # 应用名称
-
+    name: sangeng-redis-rag
+  datasource:
+    url: jdbc:postgresql://localhost:5432/zhipu
+    username: postgres
+    password: app_password
+  data:
+    # redissearch的配置
+    redis:
+      host: 127.0.0.1  # Redis服务器地址
+      port: 6379  # Redis服务器连接端口（默认6379）
   # Spring AI 配置
   ai:
     # 智谱AI大模型配置
@@ -19,23 +26,20 @@ spring:
         options:
           model: embedding-3  # 使用的嵌入模型名称（embedding-3）
           dimensions: 256  # 嵌入向量的维度（256维）
-    mcp:
-      client:
-        sse:
-          connections:
-            server1:
-              url: http://localhost:8080 # mcp服务url
-            fetcher-mcp:
-              url: http://192.168.31.216:3000
+#    mcp:
+#      client:
+#        sse:
+#          connections:
+#            server1:
+#              url: http://localhost:8080 # mcp服务url
+#            fetcher-mcp:
+#              url: http://192.168.31.216:3000
     # 向量存储配置
     vectorstore:
       redis:
         initialize-schema: true  # 启动时自动创建Redis向量索引结构（首次部署需开启）
-        prefix: sangeng_rag_prefix  # Redis键名前缀，用于区分不同应用的向量数据
-        index: sangeng_rag_index  # Redis向量索引名称
-
-  # 数据源配置
-  data:
-    redis:
-      host: 192.168.31.216  # Redis服务器地址
-      port: 6379  # Redis服务器连接端口（默认6379）
+        prefix: "rag:coffee:"
+        index: "rag:coffee:index"
+#      pgvector:
+#        enabled: true
+#        initialize-schema: true

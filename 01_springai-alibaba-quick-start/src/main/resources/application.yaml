@@ -9,7 +9,7 @@ server:
 spring:
   ai:
     zhipuai:
-      api-key: 0f5c5b9d1a664c5f9001246bafa42764.yxhSVBJPcpyLqYsm
+      api-key: ${ZHIPU_KEY}
       base-url: "https://open.bigmodel.cn/api/paas"
       chat:
         options:

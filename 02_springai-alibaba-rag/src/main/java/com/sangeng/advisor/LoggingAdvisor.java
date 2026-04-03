@@ -26,7 +26,7 @@ public class LoggingAdvisor implements CallAdvisor {
         long cost = System.currentTimeMillis() - start;
 
         log.info("=== AI Response ===");
-        log.info("Cost: {} ms", cost);
+        log.info("Cost: {} s", (float) cost / 1000);
         log.info("Response: {}", response);
 
         return response;

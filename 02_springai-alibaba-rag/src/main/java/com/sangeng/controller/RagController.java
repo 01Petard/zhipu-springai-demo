@@ -67,6 +67,7 @@ public class RagController {
         documents.forEach(document -> {
             log.info("找到默认的知识：{}", document);
         });
+
         // 2. 拼 context
         String context = documents.stream()
                 .map(Document::getText)

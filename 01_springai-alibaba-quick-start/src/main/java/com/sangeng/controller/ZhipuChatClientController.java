@@ -16,6 +16,8 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.zhipuai.ZhiPuAiChatOptions;
+import org.springframework.http.MediaType;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,6 +91,15 @@ public class ZhipuChatClientController {
                 .user("给我随机生成一本书，要求书名和作者都是中文")
                 .stream()
                 .content();
+    }
+
+    @GetMapping(value = "/stream/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<ServerSentEvent<String>> stream2() {
+        return chatClient.prompt()
+                .user("给我随机生成一本书，要求书名和作者都是中文")
+                .stream()
+                .content()
+                .mapNotNull(content -> ServerSentEvent.builder(content).build());
     }
 
 

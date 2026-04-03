@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AI 流式对话</title>
+    <style>
+        #output {
+            width: 500px;
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+<button onclick="start()">生成内容</button>
+
+<div id="output"></div>
+
+<script>
+    let eventSource;
+
+    function start() {
+        const output = document.getElementById("output");
+        output.innerHTML = "";
+
+        // 关闭旧连接
+        if (eventSource) {
+            eventSource.close();
+        }
+
+        eventSource = new EventSource("http://127.0.0.1:18080/chatclient/stream/sse");
+
+        eventSource.onmessage = function (event) {
+            console.log("收到:", event.data);
+
+            // 追加内容
+            output.textContent += event.data;
+
+            // 自动滚动到底部
+            output.scrollTop = output.scrollHeight;
+        };
+
+        eventSource.onerror = function (err) {
+            console.error("SSE错误:", err);
+            eventSource.close();
+        };
+    }
+</script>
+
+</body>
+</html>

@@ -80,8 +80,40 @@ public class RagController {
         ));
 
         // 4. 调 LLM 对话
-        return chatClient.prompt(prompt)
-                .call()
-                .content();
+        try {
+            return chatClient.prompt(prompt)
+                    .call()
+                    .content();
+        } catch (Exception e) {
+            log.error("调用大模型对话失败: {}，对话内容: {}", e.getMessage(), prompt);
+            // 提取异常中的关键信息
+            String errorMessage = extractErrorMessage(e);
+            return "抱歉，处理您的请求时出现了问题：" + errorMessage;
+        }
+    }
+
+    /**
+     * 从异常中提取友好的错误信息
+     */
+    private String extractErrorMessage(Exception e) {
+        String message = e.getMessage();
+        if (message == null) {
+            return "未知错误";
+        }
+        // 处理智谱 AI 的错误信息
+        if (message.contains("1301")) {
+            return "您的请求可能包含敏感内容，请尝试更换问题或稍后再试。";
+        }
+        if (message.contains("contentFilter")) {
+            return "请求内容可能包含敏感信息，请修改后重试。";
+        }
+        if (message.contains("HTTP 400") || message.contains("HTTP 500")) {
+            return "AI 服务暂时不可用，请稍后再试。";
+        }
+        // 截断过长的错误信息
+        if (message.length() > 100) {
+            return message.substring(0, 100) + "...";
+        }
+        return message;
     }
 }

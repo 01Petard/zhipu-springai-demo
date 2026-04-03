@@ -11,7 +11,11 @@ import org.springframework.context.annotation.Configuration;
 public class McpConfig {
 
     @Bean
-    public ToolCallbackProvider getToolCallbackProvider(TimeTools timeTools) {
-        return MethodToolCallbackProvider.builder().toolObjects(timeTools).build();
+    public ToolCallbackProvider getToolCallbackProvider(
+            TimeTools timeTools
+    ) {
+        return MethodToolCallbackProvider.builder()
+                .toolObjects(timeTools)
+                .build();
     }
 }

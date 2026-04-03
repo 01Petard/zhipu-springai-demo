@@ -29,6 +29,7 @@ public class RagCommonConfig {
     @Bean("defaultPromptTemplate")
     public PromptTemplate defaultPromptTemplate() {
         return new PromptTemplate("""
+                
                 你是一个严谨的知识库问答助手。
                 
                 【规则】
@@ -55,6 +56,7 @@ public class RagCommonConfig {
     @Bean("coffeePromptTemplate")
     public PromptTemplate coffeePromptTemplate() {
         return new PromptTemplate("""
+                
                 你是一个严谨的咖啡知识库问答助手。
                 
                 【规则】

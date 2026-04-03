@@ -22,14 +22,14 @@ spring:
         options:
           model: embedding-3
           dimensions: 1024    # 如果修改此参数，需要进入redis-cli删除向量index
-#    mcp:
-#      client:
-#        sse:
-#          connections:
-#            server1:
-#              url: http://localhost:8080 # mcp服务url
-#            fetcher-mcp:
-#              url: http://192.168.31.216:3000
+    mcp:
+      client:
+        sse:
+          connections:
+            time-server:
+              url: http://127.0.0.1:8080 # mcp服务url
+            fetcher-mcp:
+              url: http://127.0.0.1:3000
     # 向量存储配置
     vectorstore:
       redis:

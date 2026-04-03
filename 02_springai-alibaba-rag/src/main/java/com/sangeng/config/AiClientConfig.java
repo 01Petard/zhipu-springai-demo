@@ -1,7 +1,6 @@
 package com.sangeng.config;
 
 import com.sangeng.advisor.LoggingAdvisor;
-import com.sangeng.tool.TimeTools;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
 import org.springframework.ai.tool.ToolCallbackProvider;
@@ -26,7 +25,9 @@ public class AiClientConfig {
     ) {
         return builder
                 .defaultAdvisors(ragAdvisor, new LoggingAdvisor())
-                .defaultTools(new TimeTools())
+                // 引入本地工具类
+//                .defaultTools(new TimeTools())
+                // 引入mcp
                 .defaultToolCallbacks(toolCallbackProvider.getToolCallbacks())
                 .build();
     }
@@ -39,7 +40,9 @@ public class AiClientConfig {
     ) {
         return builder
                 .defaultAdvisors(ragAdvisor, new LoggingAdvisor())
-                .defaultTools(new TimeTools())
+                // 引入本地工具类
+//                .defaultTools(new TimeTools())
+                // 引入mcp
                 .defaultToolCallbacks(toolCallbackProvider.getToolCallbacks())
                 .build();
     }

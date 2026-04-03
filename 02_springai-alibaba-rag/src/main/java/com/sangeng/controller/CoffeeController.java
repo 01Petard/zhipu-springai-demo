@@ -2,14 +2,17 @@ package com.sangeng.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.RequiredArgsConstructor;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,15 +23,25 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/coffee")
 public class CoffeeController {
 
-    private final VectorStore vectorStore;
-    private final ChatClient chatClient;
+    @Resource
+    @Qualifier("coffeeVectorStore")
+    private VectorStore vectorStore;
+
+    @Resource
+    @Qualifier("coffeeChatClient")
+    private ChatClient chatClient;
+
+    @Resource
+    @Qualifier("coffeePromptTemplate")
+    private PromptTemplate promptTemplate;
 
     @Operation(summary = "构建知识库")
     @GetMapping("/import")
@@ -68,21 +81,32 @@ public class CoffeeController {
         }
     }
 
-    /**
-     * 新增的RAG问答接口，明确展示查询向量数据库的过程
-     * @param question 用户的问题
-     * @return AI基于检索到的信息生成的回答
-     */
-    @GetMapping("/rag-ask")
+    @GetMapping("/chat")
     public String ragAskQuestion(
-            @RequestParam("question") String question
+            @RequestParam("query") String query
     ) {
-        return chatClient.prompt()
-                .system("你是三更咖啡的服务员，你需要回答用户的问题。")
-                .user(question)
-                .call().content();
+        // 1. 向量检索
+        List<Document> documents = vectorStore.similaritySearch(query);
+        documents.forEach(document -> {
+            log.info("找到咖啡相关的知识：{}", document);
+        });
+        // 2. 拼 context
+        String context = documents.stream()
+                .map(Document::getText)
+                .collect(Collectors.joining("\n---\n"));
 
+        // 3. 用 PromptTemplate
+        Prompt prompt = promptTemplate.create(Map.of(
+                "context", context,
+                "question", query
+        ));
+
+        // 4. 调 LLM 对话
+        return chatClient.prompt(prompt)
+                .call()
+                .content();
     }
+
 
     @GetMapping("/fetcher")
     public String fetcher(

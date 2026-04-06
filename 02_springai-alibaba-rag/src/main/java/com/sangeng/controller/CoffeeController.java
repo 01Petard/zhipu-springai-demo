@@ -14,6 +14,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,9 +44,18 @@ public class CoffeeController {
     @Qualifier("coffeePromptTemplate")
     private PromptTemplate promptTemplate;
 
+    @Resource
+    private RedisTemplate redisTemplate;
+
     @Operation(summary = "构建知识库")
     @GetMapping("/import")
-    public String importData() {
+    public void importData() {
+//        redisTemplate.opsForValue().set("time", LocalDateTime.now().toString());
+//
+//        vectorStore.add(List.of(
+//                new Document(LocalDateTime.now().toString())
+//        ));
+
         // 读取classpath下的QA.csv文件
         ClassPathResource resource = new ClassPathResource("QA.csv");
 
@@ -74,10 +84,10 @@ public class CoffeeController {
 
             // 将文档存入向量数据库
             vectorStore.add(documents);
-            return "成功导入 " + documents.size() + " 条记录到向量数据库";
+            log.info("成功导入 {} 条记录到向量数据库", documents.size());
 
         } catch (IOException e) {
-            return "导入失败: " + e.getMessage();
+            log.error("导入失败: {}", e.getMessage());
         }
     }
 

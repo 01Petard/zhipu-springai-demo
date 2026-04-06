@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import redis.clients.jedis.DefaultJedisClientConfig;
+import redis.clients.jedis.HostAndPort;
+import redis.clients.jedis.JedisClientConfig;
 import redis.clients.jedis.JedisPooled;
 
 /**
@@ -27,10 +30,16 @@ public class DefaultRagClientConfig {
     @Value("${spring.data.redis.port:6379}")
     private int redisPort;
 
+    @Value("${spring.data.redis.password:app_password}")
+    private String redisPassword;
+
     @Bean("defaultVectorStore")
     @Primary
     public RedisVectorStore defaultVectorStore(EmbeddingModel embeddingModel) {
-        JedisPooled jedisPooled = new JedisPooled(redisHost, redisPort);
+        JedisClientConfig clientConfig = DefaultJedisClientConfig.builder()
+                .password(redisPassword)
+                .build();
+        JedisPooled jedisPooled = new JedisPooled(new HostAndPort(redisHost, redisPort), clientConfig);
         return RedisVectorStore.builder(jedisPooled, embeddingModel)
                 .prefix("rag:default:")
                 .initializeSchema(true)

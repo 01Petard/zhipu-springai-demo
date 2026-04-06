@@ -8,8 +8,9 @@ spring:
   data:
     # redissearch的配置
     redis:
-      host: 127.0.0.1  # Redis服务器地址
-      port: 6379  # Redis服务器连接端口（默认6379）
+      host: 127.0.0.1
+      port: 6379
+      password: app_password
   # Spring AI 配置
   ai:
     # 智谱AI大模型配置
@@ -22,14 +23,14 @@ spring:
         options:
           model: embedding-3
           dimensions: 1024    # 如果修改此参数，需要进入redis-cli删除向量index
-    mcp:
-      client:
-        sse:
-          connections:
-            time-server:
-              url: http://127.0.0.1:8080 # mcp服务url
-            fetcher-mcp:
-              url: http://127.0.0.1:3000
+#    mcp:
+#      client:
+#        sse:
+#          connections:
+#            time-server:
+#              url: http://127.0.0.1:8080 # mcp服务url
+#            fetcher-mcp:
+#              url: http://127.0.0.1:3000
     # 向量存储配置
     vectorstore:
       redis:

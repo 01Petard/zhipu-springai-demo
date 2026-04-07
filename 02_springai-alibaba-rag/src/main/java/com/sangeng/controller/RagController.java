@@ -10,7 +10,6 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,16 +21,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/rag")
 public class RagController {
 
-    @Resource
-    @Qualifier("defaultVectorStore")
+    @Resource(name = "defaultVectorStore")
     private VectorStore vectorStore;
 
-    @Resource
-    @Qualifier("defaultChatClient")
+    @Resource(name = "defaultChatClient")
     private ChatClient chatClient;
 
-    @Resource
-    @Qualifier("defaultPromptTemplate")
+    @Resource(name = "defaultPromptTemplate")
     private PromptTemplate promptTemplate;
 
     @Operation(summary = "构建知识库")

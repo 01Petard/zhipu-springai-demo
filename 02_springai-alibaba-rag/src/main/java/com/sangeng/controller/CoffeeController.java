@@ -12,9 +12,10 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,29 +34,31 @@ import java.util.stream.Collectors;
 @RequestMapping("/coffee")
 public class CoffeeController {
 
-    @Resource
-    @Qualifier("coffeeVectorStore")
+    @Resource(name = "coffeeVectorStore")
     private VectorStore vectorStore;
 
-    @Resource
-    @Qualifier("coffeeChatClient")
+    @Resource(name = "coffeeChatClient")
     private ChatClient chatClient;
 
-    @Resource
-    @Qualifier("coffeePromptTemplate")
+    @Resource(name = "coffeePromptTemplate")
     private PromptTemplate promptTemplate;
 
     @Resource
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Operation(summary = "构建知识库")
-    @GetMapping("/import")
+    @GetMapping("/build")
     public void importData() {
-//        redisTemplate.opsForValue().set("time", LocalDateTime.now().toString());
-//
-//        vectorStore.add(List.of(
-//                new Document(LocalDateTime.now().toString())
-//        ));
+        redisTemplate.opsForValue().set("rag:coffee:time", "本知识库构建于" + LocalDateTime.now());
+
+        Cursor<byte[]> cursor = redisTemplate.getConnectionFactory()
+                .getConnection().scan(
+                        ScanOptions.scanOptions().match("rag:coffee:*").build()
+                );
+
+        while (cursor.hasNext()) {
+            redisTemplate.delete(new String(cursor.next()));
+        }
 
         // 读取classpath下的QA.csv文件
         ClassPathResource resource = new ClassPathResource("QA.csv");
@@ -81,6 +85,7 @@ public class CoffeeController {
                 Document document = new Document(content);
                 documents.add(document);
             }
+            documents.add(new Document("本知识库构建于: " + LocalDateTime.now()));
 
             // 将文档存入向量数据库
             vectorStore.add(documents);
